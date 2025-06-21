@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from futurehouse_client import FutureHouseClient, JobNames
 from futurehouse_client.models import TaskRequest
 import re
@@ -26,9 +26,6 @@ def clean_futurehouse_response(text: str) -> str:
     text = re.sub(r'\s+', ' ', text)
     return text.strip()
 
-@app.route('/')
-def index():
-    return send_from_directory('.', 'index.html')
 
 @app.route('/ask_crow', methods=['POST'])
 def ask_crow():
@@ -136,6 +133,13 @@ def ask_multi():
         except Exception as e:
             results.append({'agent': agent, 'error': str(e)})
     return jsonify({'results': results})
+
+@app.route('/sample_post_req', methods=['POST'])
+def sample_post_req():
+    return jsonify({
+        'status': 'success',
+        'message': 'Sample POST endpoint message from Backend app running in Render'
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)
